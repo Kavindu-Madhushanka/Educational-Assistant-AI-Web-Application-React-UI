@@ -1,130 +1,156 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width,initial-scale=1.0" name="viewport"/>
-<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #000;
-    }
-  </style>
-</head>
-<body>
-<!-- STITCH_THREEJS_START:ANIMATION_1 class="fixed inset-0 w-full h-full bg-transparent" -->
-<div class="fixed inset-0 w-full h-full bg-transparent" style="display:block;">
-<script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
-<div id="threejs-container-ANIMATION_1" style="width:100%;height:100%"></div>
-<script>
-(function() {
-  const container = document.getElementById('threejs-container-ANIMATION_1');
-  const devicePixelRatio = window.devicePixelRatio || 1;
-  
-const width = container.clientWidth || window.innerWidth;
-const height = container.clientHeight || window.innerHeight;
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-renderer.setSize(width, height);
-renderer.setPixelRatio(window.devicePixelRatio);
-container.appendChild(renderer.domElement);
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width,initial-scale=1.0" name="viewport" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: transparent;
+      }
+    </style>
+  </head>
+  <body class="bg-transparent">
+    <div
+      id="threejs-container-ANIMATION_1"
+      style="
+        width: 100%;
+        height: 100%;
+        background: transparent;
+        position: absolute;
+        top: 0;
+        left: 0;
+      "
+    ></div>
 
-// Brain Group
-const brainGroup = new THREE.Group();
-scene.add(brainGroup);
+    <script src="https://ajax.googleapis.com/ajax/libs/threejs/r125/three.min.js"></script>
+    <script>
+      (function () {
+        const container = document.getElementById(
+          "threejs-container-ANIMATION_1",
+        );
+        const width = container.clientWidth || window.innerWidth;
+        const height = container.clientHeight || window.innerHeight;
 
-// Create Central "AI Brain" - Glowing Sphere with Wireframe
-const brainCore = new THREE.Mesh(
-  new THREE.SphereGeometry(1, 32, 32),
-  new THREE.MeshPhongMaterial({
-    color: 0x22C55E,
-    transparent: true,
-    opacity: 0.2,
-    emissive: 0x22C55E,
-    emissiveIntensity: 0.5
-  })
-);
-brainGroup.add(brainCore);
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(
+          75,
+          width / height,
+          0.1,
+          1000,
+        );
 
-const brainWire = new THREE.Mesh(
-  new THREE.IcosahedronGeometry(1.2, 2),
-  new THREE.MeshBasicMaterial({
-    color: 0x22C55E,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.3
-  })
-);
-brainGroup.add(brainWire);
+        const renderer = new THREE.WebGLRenderer({
+          alpha: true,
+          antialias: true,
+          powerPreference: "high-performance",
+        });
 
-// Floating Icons Setup
-const iconCount = 6;
-const icons = [];
-const iconTypes = ['book', 'quiz', 'pdf', 'analytics', 'flashcard', 'sync'];
+        renderer.setClearColor(0x000000, 0);
+        renderer.setSize(width, height);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        container.appendChild(renderer.domElement);
 
-for (let i = 0; i < iconCount; i++) {
-  const angle = (i / iconCount) * Math.PI * 2;
-  const radius = 3;
-  const group = new THREE.Group();
-  
-  // Create a simple representative geometry for icons
-  const geometry = i % 2 === 0 ? new THREE.BoxGeometry(0.4, 0.5, 0.1) : new THREE.CylinderGeometry(0.2, 0.2, 0.5, 12);
-  const material = new THREE.MeshPhongMaterial({ color: 0x22C55E, emissive: 0x22C55E, emissiveIntensity: 0.8 });
-  const mesh = new THREE.Mesh(geometry, material);
-  
-  group.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
-  group.add(mesh);
-  scene.add(group);
-  icons.push({ group, angle, radius, speed: 0.01 + Math.random() * 0.01, offset: Math.random() * 100 });
-}
+        const brainGroup = new THREE.Group();
+        scene.add(brainGroup);
 
-const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-scene.add(ambientLight);
-const pointLight = new THREE.PointLight(0x22C55E, 2, 10);
-pointLight.position.set(2, 3, 4);
-scene.add(pointLight);
+        const brainCore = new THREE.Mesh(
+          new THREE.SphereGeometry(1, 32, 32),
+          new THREE.MeshBasicMaterial({
+            color: 0x22c55e,
+            transparent: true,
+            opacity: 0.25,
+          }),
+        );
+        brainGroup.add(brainCore);
 
-camera.position.z = 8;
+        const brainWire = new THREE.Mesh(
+          new THREE.IcosahedronGeometry(1.2, 2),
+          new THREE.MeshBasicMaterial({
+            color: 0x22c55e,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.4,
+          }),
+        );
+        brainGroup.add(brainWire);
 
-function animate(time) {
-  requestAnimationFrame(animate);
-  
-  brainGroup.rotation.y += 0.005;
-  brainGroup.rotation.z += 0.002;
-  
-  // Pulsing core
-  const pulse = 1 + Math.sin(time * 0.002) * 0.1;
-  brainCore.scale.set(pulse, pulse, pulse);
-  
-  icons.forEach((icon, i) => {
-    icon.angle += icon.speed;
-    icon.group.position.x = Math.cos(icon.angle) * icon.radius;
-    icon.group.position.y = Math.sin(icon.angle) * icon.radius + Math.sin(time * 0.002 + icon.offset) * 0.5;
-    icon.group.rotation.x += 0.01;
-    icon.group.rotation.y += 0.01;
-  });
-  
-  renderer.render(scene, camera);
-}
+        const iconCount = 6;
+        const icons = [];
 
-window.addEventListener('resize', () => {
-  const w = container.clientWidth || window.innerWidth;
-  const h = container.clientHeight || window.innerHeight;
-  camera.aspect = w / h;
-  camera.updateProjectionMatrix();
-  renderer.setSize(w, h);
-});
+        for (let i = 0; i < iconCount; i++) {
+          const angle = (i / iconCount) * Math.PI * 2;
+          const radius = 2.5;
+          const group = new THREE.Group();
 
-animate(0);
+          const geometry =
+            i % 2 === 0
+              ? new THREE.BoxGeometry(0.3, 0.4, 0.1)
+              : new THREE.CylinderGeometry(0.15, 0.15, 0.4, 12);
 
-})();
-</script>
-</div>
-<!-- STITCH_THREEJS_END:ANIMATION_1 -->
-</body>
+          const material = new THREE.MeshBasicMaterial({
+            color: 0x2ecc71,
+          });
+          const mesh = new THREE.Mesh(geometry, material);
+
+          group.position.set(
+            Math.cos(angle) * radius,
+            Math.sin(angle) * radius,
+            0,
+          );
+          group.add(mesh);
+          scene.add(group);
+          icons.push({
+            group,
+            angle,
+            radius,
+            speed: 0.01 + Math.random() * 0.01,
+            offset: Math.random() * 100,
+          });
+        }
+
+        camera.position.z = 5;
+
+        function animate(time) {
+          requestAnimationFrame(animate);
+
+          brainGroup.rotation.y += 0.005;
+          brainGroup.rotation.z += 0.002;
+
+          const pulse = 1 + Math.sin(time * 0.002) * 0.08;
+          brainCore.scale.set(pulse, pulse, pulse);
+
+          icons.forEach((icon) => {
+            icon.angle += icon.speed;
+            icon.group.position.x = Math.cos(icon.angle) * icon.radius;
+            icon.group.position.y =
+              Math.sin(icon.angle) * icon.radius +
+              Math.sin(time * 0.002 + icon.offset) * 0.3;
+            icon.group.rotation.x += 0.01;
+            icon.group.rotation.y += 0.01;
+          });
+
+          renderer.render(scene, camera);
+        }
+
+        window.addEventListener("resize", () => {
+          const w = container.clientWidth || window.innerWidth;
+          const h = container.clientHeight || window.innerHeight;
+          camera.aspect = w / h;
+          camera.updateProjectionMatrix();
+          renderer.setSize(w, h);
+        });
+
+        animate(0);
+      })();
+    </script>
+  </body>
 </html>
