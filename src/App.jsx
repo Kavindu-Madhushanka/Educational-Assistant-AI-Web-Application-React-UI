@@ -8,8 +8,10 @@ function App() {
 
   return (
     <>
-      <dev>
+      <dev className="w-full min-h-screen bg-[#0b1116]">
         <h1 className="text-red-500">AI PROJECT</h1>
+
+        <iframe src="/three.js.html" />
       </dev>
     </>
   );
