@@ -66,9 +66,11 @@ const FirstLoadPage = ({ onComplete }) => {
             className="w-14 h-14 object-contain drop-shadow-[0_0_15px_rgba(46,204,113,0.4)]"
           />
         </div>
-        <h1 className="text-2xl font-black tracking-[0.2em] text-white uppercase drop-shadow-[0_0_10px_rgba(46,204,113,0.2)]">
-          EduAsst AI
-        </h1>
+        <div className="text-2xl font-black tracking-[0.2em] uppercase drop-shadow-[0_0_10px_rgba(46,204,113,0.2)] space-x-2">
+          <span className="text-[#2ecc71]">EduAsst</span>
+          <span className="text-white">AI</span>
+        </div>
+
         <div className="h-[1px] w-12 bg-gradient-to-r from-transparent via-[#2ecc71]/40 to-transparent mt-1"></div>
       </div>
 
