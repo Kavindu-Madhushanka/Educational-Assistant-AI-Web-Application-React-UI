@@ -5,6 +5,7 @@ import SignUpForm from "./SignUpForm";
 
 const LoginPage = () => {
   const [isSignIn, setIsSingIn] = useState(true);
+
   return (
     <div className="w-full h-screen max-h-screen bg-[#04080a] text-white flex flex-col overflow-hidden relative select-none">
       <NavBar />
