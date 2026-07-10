@@ -1,11 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const SignInForm = ({ onToggleForm }) => {
+const SignInForm = ({ onToggleForm, onSignInSubmit }) => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handelSignInSubmit = (e) => {
     e.preventDefault();
+    onSignInSubmit({ email, password });
     navigate("/dashborad");
   };
   return (
@@ -23,6 +26,9 @@ const SignInForm = ({ onToggleForm }) => {
             <input
               type="text"
               placeholder="Enter your email or username"
+              required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-[#070c0e] border border-[#2ecc71]/20 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#2ecc71] transition-all"
             />
           </div>
@@ -35,6 +41,9 @@ const SignInForm = ({ onToggleForm }) => {
               <input
                 type="password"
                 placeholder="Enter your password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 className="w-full bg-[#070c0e] border border-[#2ecc71]/20 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#2ecc71] transition-all"
               />
               <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 cursor-pointer hover:text-[#2ecc71]">
