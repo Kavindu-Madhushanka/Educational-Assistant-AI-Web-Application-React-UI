@@ -2,9 +2,28 @@ import { useState } from "react";
 import NavBar from "../NavBar";
 import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   const [isSignIn, setIsSingIn] = useState(true);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+
+  const API_URL = "http://localhost:5071/api/auth/signin";
+
+  const handleSingInSubmit = async (signInData) => {
+    setError("");
+    try {
+      const response = await axios.post(`${API_URL}/singnin`, signInData);
+      localStorage.setItem("token", response.data.token);
+      navigate("/dashboard");
+    } catch (err) {
+      setError(err.response?.data?.message || "Invalid Email or Password");
+    }
+  };
+
+  handelSingInSubmit = () => {};
 
   return (
     <div className="w-full h-screen max-h-screen bg-[#04080a] text-white flex flex-col overflow-hidden relative select-none">
@@ -53,7 +72,10 @@ const LoginPage = () => {
         <div className="flex-1 md:flex-[0.45] h-full flex items-center justify-center bg-[#04080a] px-8 border-l border-gray-900/30">
           <div className="w-full max-w-md p-5 text-xs text-gray-600 border border-[#2ecc71]/30  rounded-xl">
             {isSignIn ? (
-              <SignInForm onToggleForm={() => setIsSingIn(false)} />
+              <SignInForm
+                onToggleForm={() => setIsSingIn(false)}
+                onSignInSubmit={handleSingInSubmit}
+              />
             ) : (
               <SignUpForm onToggleForm={() => setIsSingIn(true)} />
             )}
