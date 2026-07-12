@@ -4,26 +4,47 @@ import SignInForm from "./SignInForm";
 import SignUpForm from "./SignUpForm";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [isSignIn, setIsSingIn] = useState(true);
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const API_URL = "http://localhost:5071/api/auth/signin";
+  const API_URL = "http://localhost:5071/api/auth";
 
   const handleSingInSubmit = async (signInData) => {
     setError("");
     try {
-      const response = await axios.post(`${API_URL}/singnin`, signInData);
-      localStorage.setItem("token", response.data.token);
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err.response?.data?.message || "Invalid Email or Password");
+      const response = await axios.post(`${API_URL}/signin`, signInData);
+      toast.success(response.data.message);
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("userid", response.data.userid);
+
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    } catch () {
+      toast.success(response.data.message);
     }
   };
 
-  handelSingInSubmit = () => {};
+  const handelSingUpSubmit = async (signUpData) => {
+    setError("");
+
+    try {
+      const response = await axios.post(`${API_URL}/signup`, signUpData);
+      toast.success(response.data.message);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("email", response.data.email);
+      localStorage.setItem("userid", response.data.userid);
+      setTimeout(() => {
+        navigate("/dashboard");
+      }, 2000);
+    } catch (err) {
+      setError(err.response?.data?.message || "User Registor Not Complete");
+    }
+  };
 
   return (
     <div className="w-full h-screen max-h-screen bg-[#04080a] text-white flex flex-col overflow-hidden relative select-none">
@@ -77,7 +98,10 @@ const LoginPage = () => {
                 onSignInSubmit={handleSingInSubmit}
               />
             ) : (
-              <SignUpForm onToggleForm={() => setIsSingIn(true)} />
+              <SignUpForm
+                onToggleForm={() => setIsSingIn(true)}
+                onSignUpSubmit={handelSingUpSubmit}
+              />
             )}
           </div>
         </div>
