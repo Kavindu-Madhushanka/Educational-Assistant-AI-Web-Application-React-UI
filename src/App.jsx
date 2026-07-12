@@ -3,7 +3,8 @@ import FirstLoadPage from "./assets/component/first_page/FirstLoadPage";
 import LoginPage from "./assets/component/log_page/LoginPage";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Dashboard from "./assets/component/dashboard/Dashboard";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -25,8 +26,9 @@ function App() {
           element={<FirstLoadPage onComplete={handleLoadingComplete} />}
         />
         <Route path="/loginpage" element={<LoginPage />} />
-        <Route path="/dashborad" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
+      <ToastContainer position="top-right" autoClose={2000} theme="dark" />
     </>
   );
 }
