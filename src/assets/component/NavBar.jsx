@@ -1,6 +1,15 @@
+import { useEffect, useState } from "react";
 import { FaRegUser } from "react-icons/fa";
 
 const NavBar = () => {
+  const [email, setEmail] = useState("");
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+  }, []);
   return (
     <nav className="w-full backdrop-blur-md border-b border-[#2ecc71]/10 px-8 py-2 flex items-center justify-between z-20 bg-[#04080a]">
       {/* Logo Section */}
@@ -34,8 +43,13 @@ const NavBar = () => {
       </div>
 
       {/* User Profile Icon with Hover Effect */}
-      <div className="w-8 h-8 rounded-full bg-[#2ecc71]/10 border border-[#2ecc71]/30 flex items-center justify-center text-[#2ecc71] cursor-pointer transition-all duration-300 hover:bg-[#2ecc71]/20 hover:drop-shadow-[0_0_8px_rgba(46,204,113,0.4)]">
-        <FaRegUser />
+      <div className="flex flex-col items-center gap-2">
+        <div className="w-8 h-8 rounded-full bg-[#2ecc71]/10 border border-[#2ecc71]/30 flex items-center justify-center text-[#2ecc71] cursor-pointer transition-all duration-300 hover:bg-[#2ecc71]/20 hover:drop-shadow-[0_0_8px_rgba(46,204,113,0.4)]">
+          <FaRegUser />
+        </div>
+        <div className="text-[#2ecc71] text-xs font-mono tracking-wide text-center">
+          {email}
+        </div>
       </div>
     </nav>
   );
