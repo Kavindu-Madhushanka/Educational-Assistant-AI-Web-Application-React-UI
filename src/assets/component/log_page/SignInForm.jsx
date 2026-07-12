@@ -6,10 +6,9 @@ const SignInForm = ({ onToggleForm, onSignInSubmit }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handelSignInSubmit = (e) => {
+  const controlSignInSubmit = (e) => {
     e.preventDefault();
     onSignInSubmit({ email, password });
-    navigate("/dashborad");
   };
   return (
     <div className="space-y-3">
@@ -17,7 +16,7 @@ const SignInForm = ({ onToggleForm, onSignInSubmit }) => {
         Sign In to Your Account
       </h2>
 
-      <form onSubmit={handelSignInSubmit}>
+      <form onSubmit={controlSignInSubmit}>
         <div className="space-y-4">
           <div>
             <label className="block mb-2 font-mono text-xs tracking-wider text-gray-400 uppercase">
