@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
-const SignUpForm = ({ onToggleForm }) => {
-  handelSignUpSubmit = (e) => {};
+const SignUpForm = ({ onToggleForm, onSignUpSubmit }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullname, setFullname] = useState("");
+  const controllSignUpSubmit = (e) => {
+    e.preventDefault();
+    onSignUpSubmit({ email, password, fullname });
+  };
   return (
     <div className="space-y-5">
       <h2 className="text-2xl font-bold tracking-wide text-gray-200">
         Create New Account
       </h2>
 
-      <form on>
+      <form onSubmit={controllSignUpSubmit}>
         <div className="space-y-4">
           <div>
             <label className="block mb-2 font-mono text-xs tracking-wider text-gray-400 uppercase">
@@ -17,6 +23,8 @@ const SignUpForm = ({ onToggleForm }) => {
             <input
               type="text"
               placeholder="Enter your full name"
+              value={fullname}
+              onChange={(e) => setFullname(e.target.value)}
               className="w-full bg-[#070c0e] border border-[#2ecc71]/20 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#2ecc71] transition-all"
             />
           </div>
@@ -28,6 +36,8 @@ const SignUpForm = ({ onToggleForm }) => {
             <input
               type="email"
               placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               className="w-full bg-[#070c0e] border border-[#2ecc71]/20 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#2ecc71] transition-all"
             />
           </div>
@@ -39,6 +49,8 @@ const SignUpForm = ({ onToggleForm }) => {
             <input
               type="password"
               placeholder="Create strong password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               className="w-full bg-[#070c0e] border border-[#2ecc71]/20 rounded-lg px-4 py-3 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-[#2ecc71] transition-all"
             />
           </div>
