@@ -28,7 +28,7 @@ function App() {
         <Route path="/loginpage" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
-      <ToastContainer position="top-right" autoClose={2000} theme="dark" />
+      <ToastContainer position="top-center" autoClose={2000} theme="dark" />
     </>
   );
 }
