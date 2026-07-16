@@ -12,19 +12,19 @@ const FileCard = ({ folder }) => {
           <h4 className="text-sm font-semibold text-gray-200 transition-colors group-hover:text-white line-clamp-1">
             {folder.name}
           </h4>
-          <p className="text-[11px] text-gray-500">{folder.lessons} Lessons</p>
+          <p className="text-[11px] text-gray-500"> Lessons</p>
         </div>
       </div>
 
       <div className="mt-2 space-y-1">
         <div className="flex justify-between text-[10px] text-gray-500">
           <span>Progress</span>
-          <span className="font-medium text-gray-400">{folder.progress}%</span>
+          <span className="font-medium text-gray-400">24</span>
         </div>
         <div className="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden">
           <div
             className="h-full transition-all duration-300 rounded-full bg-[#27ae60]"
-            style={{ width: `${folder.progress}%` }}
+            style={{ width: `${50}%` }}
           />
         </div>
       </div>
