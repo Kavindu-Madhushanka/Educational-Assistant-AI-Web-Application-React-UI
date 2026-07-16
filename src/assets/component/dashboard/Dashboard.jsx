@@ -1,35 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SmartVideoUpload from "./SmartVideoUpload";
 import RecentActivity from "./RecentActivity";
 import FileList from "./FileList";
 import FolderCreator from "./FolderCreator";
 import UploadPopup from "./UploadPopup";
 import NavBar from "../NavBar";
+import axios from "axios";
 
 const Dashboard = () => {
-  const [folders, setFolders] = useState([
-    { id: 1, name: "ICT", lessons: 24, progress: 78 },
-    { id: 2, name: "Physics", lessons: 18, progress: 64 },
-    { id: 3, name: "Maths", lessons: 30, progress: 85 },
-    { id: 4, name: "Chemistry", lessons: 12, progress: 45 },
-    { id: 5, name: "Biology", lessons: 40, progress: 90 },
-    { id: 6, name: "History", lessons: 15, progress: 30 },
-  ]);
+  const [folders, setFolders] = useState([]);
 
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isCreateFolderOpen, setIsCreateFolderOpen] = useState(false);
 
-  const handleCreateFolder = (folderName) => {
-    setFolders([
-      ...folders,
-      {
-        id: Date.now(),
-        name: folderName,
-        lessons: 0,
-        progress: 0,
-      },
-    ]);
-  };
+  const userId=localStorage.userId;
+
+  const fetchFolder=async=()=>{
+    try{
+    const response=await axios.get(`http://localhost:5071/api/FolderLessonNotes/getallfolders/${userId}`);
+    setFolders(response.data);
+    }catch(err){
+      console.error("Error fetching folders:",err);
+    }
+  }
+
+  useEffect(()=>{
+    fetchFolder();
+  },[])
+
+  
 
   return (
     <div className="h-screen w-full bg-[#04080a] text-white flex flex-col overflow-hidden">
