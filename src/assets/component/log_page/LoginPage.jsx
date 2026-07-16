@@ -24,8 +24,8 @@ const LoginPage = () => {
       setTimeout(() => {
         navigate("/dashboard");
       }, 2000);
-    } catch () {
-      toast.success(response.data.message);
+    } catch (err) {
+      toast.error(err?.response?.data?.message);
     }
   };
 
@@ -35,7 +35,7 @@ const LoginPage = () => {
     try {
       const response = await axios.post(`${API_URL}/signup`, signUpData);
       toast.success(response.data.message);
-      localStorage.setItem("token", response.data.token);
+
       localStorage.setItem("email", response.data.email);
       localStorage.setItem("userid", response.data.userid);
       setTimeout(() => {
