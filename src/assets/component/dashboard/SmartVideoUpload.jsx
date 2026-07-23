@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 
 const SmartVideoUpload = ({ onUploadClick }) => {
+  const [videoUrl, setVideoUrl] = useState("");
+
+  const handleUpload = () => {
+    if (!videoUrl.trim()) {
+      alert("Please paste a valid YouTube video link!");
+      return;
+    }
+
+    if (onUploadClick) {
+      onUploadClick(videoUrl);
+    }
+  };
+
   return (
     <div className="bg-[#070c0e] border border-gray-800 rounded-2xl p-6 h-full flex flex-col justify-center">
       <div className="flex items-center gap-2 mb-4">
@@ -21,10 +34,12 @@ const SmartVideoUpload = ({ onUploadClick }) => {
           <input
             type="text"
             placeholder="Paste YouTube Link here..."
+            value={videoUrl}
+            onChange={(e) => setVideoUrl(e.target.value)}
             className="w-full px-4 py-2 text-xs text-gray-200 bg-transparent focus:outline-none"
           />
           <button
-            onClick={onUploadClick}
+            onClick={handleUpload}
             className="px-6 py-2 text-xs font-bold text-black transition bg-[#27ae60] hover:bg-[#2ecc71]"
           >
             Upload
