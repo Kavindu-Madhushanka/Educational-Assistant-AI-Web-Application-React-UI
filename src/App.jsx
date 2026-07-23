@@ -5,6 +5,7 @@ import { Routes, Route, useNavigate } from "react-router-dom";
 import Dashboard from "./assets/component/dashboard/Dashboard";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FolderLessonsPage from "./assets/component/lesson/FolderLesson";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ function App() {
         />
         <Route path="/loginpage" element={<LoginPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/folder/:id" element={<FolderLessonsPage />} />
       </Routes>
       <ToastContainer position="top-center" autoClose={2000} theme="dark" />
     </>
