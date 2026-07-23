@@ -1,17 +1,29 @@
 import React from "react";
 import { IoFolderOutline } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const FileCard = ({ folder }) => {
-  // Safe extraction of values from C# Backend or Frontend Fallback
+  const navigate = useNavigate();
+
+  const folderId = folder?.folderID || folder?.folderId || folder?.id;
   const folderName = folder?.folderName || folder?.name || "Untitled Folder";
   const lessonCount = folder?.lessonCount ?? folder?.lessonsCount ?? 0;
   const progressValue = folder?.progress ?? 50;
 
+  const handleFolderClick = () => {
+    if (!folderId) return;
+    navigate(`/folder/${folderId}`, { state: { folderName } });
+  };
+
   return (
-    <div className="w-full bg-[#070c0e] border border-gray-800/60 rounded-xl p-3.5 hover:border-[#27ae60] transition-all duration-200 group flex flex-col justify-between h-[105px]">
+    <button
+      type="button"
+      onClick={handleFolderClick}
+      className="w-full bg-[#070c0e] border border-gray-800/60 rounded-xl p-3.5 hover:border-[#27ae60] focus:border-[#27ae60] focus:outline-none transition-all duration-200 group flex flex-col justify-between h-[105px] cursor-pointer text-left"
+    >
       <div className="flex items-center gap-3">
         <div className="p-2 bg-[#27ae60] rounded-lg text-[#070c0e] group-hover:scale-105 transition-transform">
-          <IoFolderOutline />
+          <IoFolderOutline className="text-lg" />
         </div>
         <div>
           <h4 className="text-sm font-semibold text-gray-200 transition-colors group-hover:text-white line-clamp-1">
@@ -21,7 +33,7 @@ const FileCard = ({ folder }) => {
         </div>
       </div>
 
-      <div className="mt-2 space-y-1">
+      <div className="w-full mt-2 space-y-1">
         <div className="flex justify-between text-[10px] text-gray-500">
           <span>Progress</span>
           <span className="font-medium text-gray-400">{progressValue}%</span>
@@ -33,7 +45,7 @@ const FileCard = ({ folder }) => {
           />
         </div>
       </div>
-    </div>
+    </button>
   );
 };
 
