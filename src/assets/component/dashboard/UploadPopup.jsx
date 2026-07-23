@@ -1,31 +1,51 @@
 import React, { useState } from "react";
+import axios from "axios";
 
-const UploadPopup = ({ folders, onClose, onSetupComplete }) => {
-  // 🔄 පියවරවල් පාලනය කරන්න (Step 1: Folder තේරීම, Step 2: Lesson නම දීම)
+const UploadPopup = ({ folders, videoUrl, onClose, onSetupComplete }) => {
   const [step, setStep] = useState(1);
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [lessonName, setLessonName] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // 📁 ෆෝල්ඩර් එකක් ක්ලික් කරාම වෙන දේ
   const handleFolderSelect = (folder) => {
     setSelectedFolder(folder);
-    setStep(2); // කෙලින්ම ඊළඟ වින්ඩෝ එකට (Step 2) මාරු වෙනවා
+    setStep(2);
   };
 
-  // 🚀 Setup බටන් එක ක්ලික් කරාම වෙන දේ
-  const handleSetup = () => {
+  const handleSetup = async () => {
     if (!lessonName.trim()) {
       alert("Please enter a lesson name!");
       return;
     }
 
-    // මෙතනදී Backend එකට විස්තර යවන්න පුළුවන් (Folder ID සහ Lesson Name එක)
-    alert(`Setting up "${lessonName}" inside ${selectedFolder.name}!`);
+    try {
+      setLoading(true);
 
-    if (onSetupComplete) {
-      onSetupComplete({ folderId: selectedFolder.id, lessonName });
+      // C# Backend DTO structure: { folderId, lessonTitle, videoUrl }
+      const response = await axios.post(
+        "http://localhost:5071/api/FolderLessonNotes/createlesson",
+        {
+          folderId: selectedFolder.folderID,
+          lessonTitle: lessonName,
+          videoUrl: videoUrl || "",
+        },
+      );
+
+      alert(`Lesson "${lessonName}" created successfully!`);
+
+      if (onSetupComplete) {
+        onSetupComplete(response.data);
+      }
+      onClose();
+    } catch (err) {
+      console.error("Error creating lesson:", err);
+      alert(
+        err.response?.data?.message ||
+          "Failed to create lesson. Please try again!",
+      );
+    } finally {
+      setLoading(false);
     }
-    onClose(); // Popup එක වහනවා
   };
 
   return (
@@ -54,18 +74,18 @@ const UploadPopup = ({ folders, onClose, onSetupComplete }) => {
             <div className="pr-1 space-y-2 overflow-y-auto max-h-48 custom-scrollbar">
               {folders.map((folder) => (
                 <button
-                  key={folder.id}
+                  key={folder.folderID || folder.id}
                   onClick={() => handleFolderSelect(folder)}
                   className="w-full flex items-center justify-between p-3 bg-[#161f26] hover:bg-emerald-500/10 border border-gray-800 hover:border-emerald-500/40 rounded-lg text-left transition group"
                 >
                   <div className="flex items-center gap-3">
                     <span className="text-xl text-yellow-400">📁</span>
                     <span className="text-sm font-medium text-gray-200 group-hover:text-emerald-400">
-                      {folder.name}
+                      {folder.folderName}
                     </span>
                   </div>
                   <span className="text-xs text-gray-500">
-                    {folder.lessons} Lessons
+                    {folder.lessonsCount || 0} Lessons
                   </span>
                 </button>
               ))}
@@ -88,7 +108,7 @@ const UploadPopup = ({ folders, onClose, onSetupComplete }) => {
             <p className="mb-4 text-xs text-gray-400">
               Selected Folder:{" "}
               <span className="font-medium text-emerald-400">
-                {selectedFolder?.name}
+                {selectedFolder?.folderName}
               </span>
             </p>
 
@@ -108,16 +128,18 @@ const UploadPopup = ({ folders, onClose, onSetupComplete }) => {
 
             <div className="flex justify-end gap-2 pt-3 mt-5 border-t border-gray-800">
               <button
-                onClick={() => setStep(1)} // ආපහු ෆෝල්ඩර් තෝරන තැනට යන්න
+                onClick={() => setStep(1)}
                 className="px-4 py-2 text-xs text-gray-400 transition hover:text-white"
+                disabled={loading}
               >
                 Back
               </button>
               <button
                 onClick={handleSetup}
-                className="px-5 py-2 text-xs font-semibold text-black transition rounded-lg shadow-lg bg-emerald-500 hover:bg-emerald-400 shadow-emerald-500/20"
+                disabled={loading}
+                className="px-5 py-2 text-xs font-semibold text-black transition rounded-lg shadow-lg bg-emerald-500 hover:bg-emerald-400 shadow-emerald-500/20 disabled:opacity-50"
               >
-                Setup Lesson
+                {loading ? "Creating..." : "Setup Lesson"}
               </button>
             </div>
           </>
