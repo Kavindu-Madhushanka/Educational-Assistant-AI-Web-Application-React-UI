@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { MoreVertical, Trash2 } from "lucide-react";
 
-const LessonTable = ({ folderName, lessons = [], onDeleteLesson }) => {
+const LessonTable = ({ folderName, lessons = [], onDeleteFolder }) => {
   const [activeMenuId, setActiveMenuId] = useState(null);
 
   const toggleMenu = (id) => {
@@ -10,12 +10,24 @@ const LessonTable = ({ folderName, lessons = [], onDeleteLesson }) => {
 
   return (
     <div className="p-2 select-none md:p-6">
-      {/* Folder Header */}
-      <div className="flex items-center gap-3 mb-6">
-        <span className="text-3xl">📁</span>
-        <h1 className="text-2xl md:text-3xl font-black text-[#2ecc71] tracking-tight drop-shadow-[0_2px_10px_rgba(46,204,113,0.3)]">
-          {folderName}
-        </h1>
+      {/* Folder Header & Delete Button */}
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <span className="text-3xl">📁</span>
+          <h1 className="text-2xl md:text-3xl font-black text-[#2ecc71] tracking-tight drop-shadow-[0_2px_10px_rgba(46,204,113,0.3)]">
+            {folderName}
+          </h1>
+        </div>
+
+        {/* Delete Folder Button */}
+        <button
+          type="button"
+          onClick={onDeleteFolder}
+          className="flex items-center gap-2 px-3.5 py-2 border border-red-500/40 rounded-xl text-red-400 hover:bg-red-500/10 hover:border-red-500 transition duration-200 text-xs font-semibold shadow-[0_0_12px_rgba(239,68,68,0.15)]"
+        >
+          <Trash2 className="w-4 h-4" />
+          <span>Delete Folder</span>
+        </button>
       </div>
 
       {/* Table Container */}
@@ -27,7 +39,7 @@ const LessonTable = ({ folderName, lessons = [], onDeleteLesson }) => {
               <th className="w-16 px-6 py-4">#</th>
               <th className="px-6 py-4">Lecture Title</th>
               <th className="px-6 py-4">Upload Date</th>
-              <th className="px-6 py-4">Duration</th>
+
               <th className="px-6 py-4 text-right">Actions</th>
             </tr>
           </thead>
@@ -48,9 +60,6 @@ const LessonTable = ({ folderName, lessons = [], onDeleteLesson }) => {
                 <td className="py-4 px-6 text-gray-400 font-mono text-[11px]">
                   {lesson.uploadDate || "2024-05-10"}
                 </td>
-                <td className="py-4 px-6 text-gray-400 font-mono text-[11px]">
-                  {lesson.duration || "42:15"}
-                </td>
 
                 {/* Action Buttons */}
                 <td className="relative px-6 py-4 text-right">
@@ -67,22 +76,6 @@ const LessonTable = ({ folderName, lessons = [], onDeleteLesson }) => {
                       <MoreVertical className="w-4 h-4" />
                     </button>
                   </div>
-
-                  {/* Dropdown Menu for Delete */}
-                  {activeMenuId === (lesson.lessonId || index) && (
-                    <div className="absolute right-6 top-12 z-20 bg-[#070e12] border border-gray-800 rounded-xl shadow-2xl py-1 w-32 backdrop-blur-md">
-                      <button
-                        onClick={() => {
-                          onDeleteLesson(lesson.lessonId);
-                          setActiveMenuId(null);
-                        }}
-                        className="flex items-center w-full gap-2 px-3 py-2 text-xs text-red-400 transition hover:bg-red-500/10"
-                      >
-                        <Trash2 className="w-3.5 h-3.5" />
-                        <span>Delete</span>
-                      </button>
-                    </div>
-                  )}
                 </td>
               </tr>
             ))}
