@@ -1,12 +1,17 @@
 import React, { useState } from "react";
 import FileCard from "./FileCard";
 
-const FileList = ({ folders, onCreateFolderClick }) => {
+const FileList = ({ folders = [], onCreateFolderClick }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredFolders = folders.filter((folder) =>
-    folder.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // Safely ensure folders is always an array
+  const safeFolders = Array.isArray(folders) ? folders : [];
+
+  const filteredFolders = safeFolders.filter((folder) => {
+    // Check both 'folderName' (C# Backend) and 'name' (Frontend) safely
+    const currentName = folder?.folderName || folder?.name || "";
+    return currentName.toLowerCase().includes(searchTerm.toLowerCase());
+  });
 
   return (
     <div className="flex flex-col w-full h-full min-h-0">
@@ -16,7 +21,7 @@ const FileList = ({ folders, onCreateFolderClick }) => {
         </h3>
 
         <div className="flex items-center gap-3">
-          {/*  Search Input */}
+          {/* Search Input */}
           <input
             type="text"
             placeholder="Search folder..."
@@ -37,22 +42,26 @@ const FileList = ({ folders, onCreateFolderClick }) => {
 
       <div
         className="flex-1 min-h-0 pr-1 overflow-y-auto 
-     [&::-webkit-scrollbar]:w-[5px] 
-     [&::-webkit-scrollbar-thumb]:bg-gray-800 
-     [&::-webkit-scrollbar-thumb]:rounded-full 
-     hover:[&::-webkit-scrollbar-thumb]:bg-emerald-500 
-     [&::-webkit-scrollbar-track]:bg-transparent
-      "
+       [&::-webkit-scrollbar]:w-[5px] 
+       [&::-webkit-scrollbar-thumb]:bg-gray-800 
+       [&::-webkit-scrollbar-thumb]:rounded-full 
+       hover:[&::-webkit-scrollbar-thumb]:bg-emerald-500 
+       [&::-webkit-scrollbar-track]:bg-transparent"
       >
         {filteredFolders.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 pb-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-8">
-            {filteredFolders.map((folder) => (
-              <FileCard key={folder.id} folder={folder} />
+            {filteredFolders.map((folder, index) => (
+              <FileCard
+                key={folder?.folderID || folder?.id || index}
+                folder={folder}
+              />
             ))}
           </div>
         ) : (
           <div className="py-10 text-sm text-center text-gray-500">
-            No folders found matching "{searchTerm}"
+            {searchTerm
+              ? `No folders found matching "${searchTerm}"`
+              : "No folders available."}
           </div>
         )}
       </div>
