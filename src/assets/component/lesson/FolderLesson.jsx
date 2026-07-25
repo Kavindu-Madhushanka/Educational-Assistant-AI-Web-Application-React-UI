@@ -44,6 +44,34 @@ const FolderLessonsPage = () => {
     }
   };
 
+  const handleDeleteLesson = async (lessonId) => {
+    if (!window.confirm("Are you sure you want to delete this lesson?")) {
+      return;
+    }
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5071/api/FolderLessonNotes/deletelesson",
+        {
+          lessonId: lessonId,
+          folderId: folderId,
+        },
+      );
+
+      if (response.status === 200 || response.data) {
+        // 🎯 Delete වුණු ගමන් UI එකේ State එකෙන් ඒ Lesson එක අයින් කරනවා (Page refresh ඕන නෑ)
+        setLoadlesson((prevLessons) =>
+          prevLessons.filter(
+            (lesson) => (lesson.lessonId || lesson.id) !== lessonId,
+          ),
+        );
+      }
+    } catch (err) {
+      console.error("Error deleting lesson:", err);
+      alert("Failed to delete the lesson. Please try again.");
+    }
+  };
+
   useEffect(() => {
     handelFetchLesson();
   }, []);
@@ -63,6 +91,7 @@ const FolderLessonsPage = () => {
           folderName={folderName}
           lessons={loadlesson}
           onDeleteFolder={handleDeleteFolder}
+          onDeleteLesson={handleDeleteLesson}
         />
       </div>
     </div>
