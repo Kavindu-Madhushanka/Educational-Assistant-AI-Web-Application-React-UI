@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [folders, setFolders] = useState([]);
   const [isUploadOpen, setIsUploadOpen] = useState(false);
   const [isCreateFolderOpen, setIsCreateFolderOpen] = useState(false);
-  const [selectedVideoUrl, setSelectedVideoUrl] = useState(""); // 🎯 Video URL state එක
+  const [selectedVideoUrl, setSelectedVideoUrl] = useState(""); //Video URL state
 
   const rawUserId = localStorage.getItem("userid") || localStorage.userid;
   const userId = rawUserId ? parseInt(rawUserId, 10) : null;
@@ -41,7 +41,6 @@ const Dashboard = () => {
     fetchFolder();
   }, []);
 
-  // 📹 SmartVideoUpload එකෙන් Link එක එන විට
   const handleUploadClick = (url) => {
     setSelectedVideoUrl(url);
     setIsUploadOpen(true);
