@@ -84,7 +84,6 @@ const LessonTable = ({
                       </button>
                     </div>
 
-                    {/* 🎯 මෙන්න මෙතැනට Delete Text එක සහිත Dropdown Menu එක එකතු කළා */}
                     {activeMenuId === curentLessonId && (
                       <div className="absolute right-6 top-12 z-20 bg-[#070e12] border border-gray-800 rounded-xl shadow-2xl py-1 w-32 backdrop-blur-md">
                         <button
