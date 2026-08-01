@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const UploadPopup = ({ folders, videoUrl, onClose, onSetupComplete }) => {
   const [step, setStep] = useState(1);
   const [selectedFolder, setSelectedFolder] = useState(null);
   const [lessonName, setLessonName] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleFolderSelect = (folder) => {
     setSelectedFolder(folder);
@@ -31,12 +33,14 @@ const UploadPopup = ({ folders, videoUrl, onClose, onSetupComplete }) => {
         },
       );
 
-      alert(`Lesson "${lessonName}" created successfully!`);
+      //alert(`Lesson "${lessonName}" created successfully!`);
 
       if (onSetupComplete) {
         onSetupComplete(response.data);
       }
       onClose();
+      const lessonId = response.data.lessons.lessonId;
+      navigate(`/studyroom/${lessonId}`);
     } catch (err) {
       console.error("Error creating lesson:", err);
       alert(
@@ -139,7 +143,7 @@ const UploadPopup = ({ folders, videoUrl, onClose, onSetupComplete }) => {
                 disabled={loading}
                 className="px-5 py-2 text-xs font-semibold text-black transition rounded-lg shadow-lg bg-emerald-500 hover:bg-emerald-400 shadow-emerald-500/20 disabled:opacity-50"
               >
-                {loading ? "Creating..." : "Setup Lesson"}
+                {loading ? "Creating..." : "Setup & Go Study Room"}
               </button>
             </div>
           </>
