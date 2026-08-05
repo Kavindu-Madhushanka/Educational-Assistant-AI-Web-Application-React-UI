@@ -37,7 +37,7 @@ const FolderLessonsPage = () => {
     ) {
       console.log("Deleting Folder ID:", folderId);
 
-      // 🎯 පස්සේ මෙතනට Delete API Call එක දාන්න පුළුවන්
+      //  Delete API Call
       // await axios.post("...", { folderId });
 
       navigate("/dashboard");
@@ -59,7 +59,6 @@ const FolderLessonsPage = () => {
       );
 
       if (response.status === 200 || response.data) {
-        // 🎯 Delete වුණු ගමන් UI එකේ State එකෙන් ඒ Lesson එක අයින් කරනවා (Page refresh ඕන නෑ)
         setLoadlesson((prevLessons) =>
           prevLessons.filter(
             (lesson) => (lesson.lessonId || lesson.id) !== lessonId,
@@ -84,8 +83,8 @@ const FolderLessonsPage = () => {
       {/* Background Glow Effect */}
       <div className="absolute top-20 right-10 w-96 h-96 bg-[#2ecc71]/10 rounded-full blur-[160px] pointer-events-none z-0" />
 
-      {/* Main Content Area */}
-      <div className="relative z-10 flex-1 w-full max-w-6xl px-4 mx-auto mt-4 overflow-y-auto">
+      {/* Main Content Area - overflow-hidden යොදා Outer Scrollbar අයින් කර ඇත */}
+      <div className="relative z-10 flex flex-col justify-center flex-1 w-full max-w-6xl px-4 mx-auto my-auto overflow-hidden">
         <LessonTable
           folderId={folderId}
           folderName={folderName}
