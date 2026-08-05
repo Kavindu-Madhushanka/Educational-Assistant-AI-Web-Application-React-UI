@@ -31,6 +31,10 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/folder/:id" element={<FolderLessonsPage />} />
         <Route path="/studyroom/:lessonId" element={<StudyRoom />} />
+        <Route
+          path="/lesson_to_studyroom/:createdLessonId"
+          element={<StudyRoom />}
+        />
       </Routes>
       <ToastContainer position="top-center" autoClose={2000} theme="dark" />
     </>
