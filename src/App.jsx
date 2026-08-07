@@ -7,6 +7,8 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FolderLessonsPage from "./assets/component/lesson/FolderLesson";
 import StudyRoom from "./assets/component/study_room/StudyRoom";
+import ChatWorkspace from "./assets/component/study_room/ChatWorkspace";
+import McqMainWorkspace from "./assets/component/mcq_work_place/McqMainWorkspace";
 function App() {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
@@ -35,6 +37,7 @@ function App() {
           path="/lesson_to_studyroom/:createdLessonId"
           element={<StudyRoom />}
         />
+        <Route path="/mcq_area/:mcqLessonId" element={<McqMainWorkspace />} />
       </Routes>
       <ToastContainer position="top-center" autoClose={2000} theme="dark" />
     </>
