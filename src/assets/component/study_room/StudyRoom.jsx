@@ -7,6 +7,7 @@ import { FaRegCheckCircle } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import html2pdf from "html2pdf.js";
+import { useNavigate } from "react-router-dom";
 
 const StudyRoom = () => {
   const { lessonId, createdLessonId } = useParams();
@@ -16,6 +17,12 @@ const StudyRoom = () => {
     summary: "",
   });
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
+
+  const handelNavigate = ({ id }) => {
+    navigate(`/mcq_area/${id}`);
+  };
 
   const handleExportPDF = () => {
     const element = document.getElementById("note-viewer-content");
@@ -162,7 +169,10 @@ const StudyRoom = () => {
             <FaDownload className="w-3.5 h-3.5 text-gray-400" /> Export to PDF
           </button>
 
-          <button className="flex items-center gap-2 text-xs font-bold bg-[#2ecc71] hover:bg-[#27ae60] text-[#04080a] px-4 py-2.5 rounded-xl transition-all shadow-[0_0_15px_rgba(46,204,113,0.3)] hover:shadow-[0_0_20px_rgba(46,204,113,0.5)] cursor-pointer">
+          <button
+            className="flex items-center gap-2 text-xs font-bold bg-[#2ecc71] hover:bg-[#27ae60] text-[#04080a] px-4 py-2.5 rounded-xl transition-all shadow-[0_0_15px_rgba(46,204,113,0.3)] hover:shadow-[0_0_20px_rgba(46,204,113,0.5)] cursor-pointer"
+            onClick={() => handelNavigate()}
+          >
             <FaRegCheckCircle className="w-4 h-4" /> Check Knowledge (MCQ)
           </button>
         </div>
